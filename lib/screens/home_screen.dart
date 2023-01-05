@@ -78,7 +78,7 @@ class _PokemonTableState extends State<_PokemonTable> {
         isLoading = false;
         setState(() {});
 
-        scrollController.animateTo(scrollController.position.pixels+120, duration: Duration(milliseconds: 300), curve: Curves.fastOutSlowIn);
+        scrollController.animateTo(scrollController.position.pixels+120, duration:Duration (milliseconds: 300), curve: Curves.fastOutSlowIn);
       }
     });
   }
