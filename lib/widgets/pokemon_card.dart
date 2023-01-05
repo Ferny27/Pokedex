@@ -11,29 +11,32 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      width: double.infinity,
-      height: 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: pokemon.color!.withOpacity(0.15)
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          
-          _PokemonImage(image: pokemon.sprites.frontDefault),
-
-          _PokemonInfo(
-            id: pokemon.id.toString(), 
-            name: pokemon.getPokemonName(pokemon.name), 
-            typeBadges: pokemon.getPokemonTypes(pokemon.types)
-          ),
-          
-          const SizedBox(height:10)
-          
-        ],
+    return GestureDetector(
+      onTap:() => Navigator.pushNamed(context, 'pokemon', arguments: pokemon),
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        width: double.infinity,
+        height: 180,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: pokemon.color!.withOpacity(0.15)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            
+            _PokemonImage(image: pokemon.sprites.frontDefault),
+    
+            _PokemonInfo(
+              id: pokemon.id.toString(), 
+              name: pokemon.getPokemonName(pokemon.name), 
+              typeBadges: pokemon.getPokemonTypes(pokemon.types)
+            ),
+            
+            const SizedBox(height:10)
+            
+          ],
+        ),
       ),
     );
   }

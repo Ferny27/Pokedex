@@ -185,7 +185,6 @@ class Sprites {
       required this.frontFemale,
       required this.frontShiny,
       required this.frontShinyFemale,
-      required this.other,
     });
 
     String backDefault;
@@ -196,7 +195,6 @@ class Sprites {
     dynamic frontFemale;
     String frontShiny;
     dynamic frontShinyFemale;
-    Other other;
 
     factory Sprites.fromJson(String str) => Sprites.fromMap(json.decode(str));
 
@@ -211,7 +209,6 @@ class Sprites {
         frontFemale: json["front_female"],
         frontShiny: json["front_shiny"],
         frontShinyFemale: json["front_shiny_female"],
-        other: Other.fromMap(json["other"]),
     );
 
     Map<String, dynamic> toMap() => {
@@ -223,7 +220,6 @@ class Sprites {
         "front_female": frontFemale,
         "front_shiny": frontShiny,
         "front_shiny_female": frontShinyFemale,
-        "other": other.toMap(),
     };
 }
 

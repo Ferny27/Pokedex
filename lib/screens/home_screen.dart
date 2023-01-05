@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/providers/pokemon_provider.dart';
 import 'package:provider/provider.dart';
@@ -65,11 +67,10 @@ class _PokemonTableState extends State<_PokemonTable> {
     scrollController.addListener(() async {
       double position = scrollController.position.pixels;
       double max = scrollController.position.maxScrollExtent;
-
       if((position + 1000) >= max){
-
+    
         if(isLoading) return;
-
+        print(position);
         isLoading = true;
         setState(() {});
 
@@ -78,7 +79,12 @@ class _PokemonTableState extends State<_PokemonTable> {
         isLoading = false;
         setState(() {});
 
-        scrollController.animateTo(scrollController.position.pixels+120, duration:Duration (milliseconds: 300), curve: Curves.fastOutSlowIn);
+        if(scrollController.position.pixels + 100 <= scrollController.position.maxScrollExtent) return;
+        scrollController.animateTo(
+          scrollController.position.pixels+120, 
+          duration: const Duration (milliseconds: 300),
+          curve: Curves.fastOutSlowIn
+        );
       }
     });
   }
