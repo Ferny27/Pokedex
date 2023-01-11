@@ -17,11 +17,104 @@ class PokemonScreen extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Column(children: [
       
-          _PokemonInfo(pokemon: pokemon)
+          _PokemonInfo(pokemon: pokemon),
+
+          _PokemonDescription(),
+
+          _PokemonChars(pokemon),
       
         ]),
       ),
     );
+  }
+}
+
+class _PokemonDescription extends StatelessWidget {
+  const _PokemonDescription({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric( vertical: 15),
+      child: Text(
+        "Mollit occaecat excepteur dolor culpa ea occaecat in magna eu. Elit cupidatat aute in fugiat reprehenderit id exercitation elit nostrud laborum. Ipsum laborum cillum nostrud sit ullamco culpa reprehenderit enim culpa sint Lorem quis qui. Commodo consequat ut ullamco occaecat exercitation mollit officia et.",
+        style: TextStyle(color: Colors.black45),
+        textAlign: TextAlign.justify,
+        )
+
+    );
+  }
+}
+
+class _PokemonChars extends StatelessWidget {
+
+  final PokemonResponse pokemon;
+  
+  const _PokemonChars( this.pokemon );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+      child: Row(
+
+        children: [
+
+          _newChar('Height', "${pokemon.realheight}''"),
+
+          _newChar('Width', "${pokemon.realweight} lb"),
+
+          _newChar('Base \nExperience', pokemon.baseExperience.toString()),
+          
+        ],
+
+      )
+
+    );
+  }
+
+  Expanded _newChar( String label, String value) {
+    return Expanded(
+          child: Container(
+            padding: EdgeInsets.all(8),
+            margin: const EdgeInsets.all(10),
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: const BorderRadius.all( Radius.circular(10))
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(value, 
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600), 
+                        textAlign: TextAlign.center
+                      ),
+                    )
+                  )
+                ),
+                Expanded(
+                  child: FittedBox(
+                    alignment: Alignment.center,
+                    fit: BoxFit.scaleDown,
+                    child: Text(label.toUpperCase(), 
+                      style: const TextStyle(color: Colors.black45, fontSize: 15, letterSpacing: 2.5), 
+                      textAlign: TextAlign.center,
+                    )
+                  ),
+                ),
+              ],
+            )
+          )
+        );
   }
 }
 
@@ -123,7 +216,7 @@ class _PokemonAppBar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        elevation: 10 ,
+        elevation: 5 ,
         backgroundColor: pokemon.color,
         centerTitle: true,
         title: const Text(

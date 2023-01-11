@@ -65,6 +65,14 @@ class PokemonResponse {
       return "${name[0].toUpperCase()}${name.substring(1).toLowerCase()}";
     }
 
+    String get realheight{
+      return (height * 3.93).toStringAsFixed(2);
+    }
+
+    String get realweight{
+      return (weight * 0.22).toStringAsFixed(2);
+    }
+
     List<Widget> getPokemonTypes(List<Type> types){
 
       final List<Widget> badges = [];
