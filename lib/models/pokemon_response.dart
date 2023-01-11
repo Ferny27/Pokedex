@@ -73,15 +73,22 @@ class PokemonResponse {
       for(Type type in types){
         color = getPokemonColor(type.type.name);
         badges.add(Container(
+                margin: const EdgeInsets.only(right: 8),
                 height: 20,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: color, width:2),
                   color: Colors.white.withOpacity(0.65)
                 ),
-                child: Text(getPokemonName(type.type.name), textAlign: TextAlign.center, style: TextStyle(color: color)),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(
+                    getPokemonName(type.type.name), 
+                    textAlign: TextAlign.center, 
+                    style: TextStyle(color: color)
+                    )
+                ),
               ));
-
       }
 
       if(types.length<=1) badges.add(Container());

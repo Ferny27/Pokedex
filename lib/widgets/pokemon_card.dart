@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon_response.dart';
+import 'package:pokedex/widgets/widgets.dart';
 
 class PokemonCard extends StatelessWidget {
   final PokemonResponse pokemon;
@@ -25,7 +26,7 @@ class PokemonCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             
-            _PokemonImage(image: pokemon.sprites.frontDefault),
+            _PokemonImage(image: pokemon.sprites.frontDefault, id: pokemon.id),
     
             _PokemonInfo(
               id: pokemon.id.toString(), 
@@ -45,10 +46,12 @@ class PokemonCard extends StatelessWidget {
 class _PokemonImage extends StatelessWidget {
 
   final String image;
+  final int id;
 
   const _PokemonImage({
     Key? key, 
-    required this.image,
+    required this.image, 
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -56,9 +59,12 @@ class _PokemonImage extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       height: 96,
-      child: FadeInImage(
-        placeholder: const AssetImage("assets/loading.gif"),
-        image: NetworkImage(image),
+      child: Hero(
+        tag: 'imagen_pokemon$id',
+        child: FadeInImage(
+          placeholder: const AssetImage("assets/loading.gif"),
+          image: NetworkImage(image),
+        ),
       ),
     );
   }
@@ -86,39 +92,27 @@ class _PokemonInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text('N.° ${id.padLeft(3,'0')}', style: const TextStyle(color: Colors.black38)),
-            _PokemonTypeBadges(badges: typeBadges),
-            Text(name, 
-              style: const TextStyle(
-                fontSize: 20, 
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis
-              )
+            Hero(
+              tag: 'id_pokemon$id',
+              flightShuttleBuilder: flightShuttleBuilder,              
+              child: Text(
+                'N.° ${id.padLeft(3,'0')}', 
+                style: const TextStyle(color: Colors.black38))),
+            Hero(tag: 'badges_pokemon${id}', child: PokemonTypeBadges(badges: typeBadges)),
+            Hero(
+              tag: 'nombre_pokemon$id',
+              flightShuttleBuilder: flightShuttleBuilder,
+              child: Text(name, 
+                style: const TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis
+                )
+              ),
             )
           ],
         ),
       ),
-    );
-  }
-}
-
-class _PokemonTypeBadges extends StatelessWidget {
-  final List<Widget> badges;
-
-  const _PokemonTypeBadges({super.key, required this.badges});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height:20,
-      child: Table(
-        children: [
-          TableRow(
-            children: badges 
-          )
-        ],
-      )
     );
   }
 }
