@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
-class PokemonResponse {
+class PokemonResponse{
     PokemonResponse({
       required this.baseExperience,
       required this.forms,
@@ -30,6 +30,7 @@ class PokemonResponse {
     List<Type> types;
     int weight;
     Color? color;
+    String? gender = 'male';
 
     factory PokemonResponse.fromJson(String str) => PokemonResponse.fromMap(json.decode(str));
 
@@ -60,7 +61,7 @@ class PokemonResponse {
         "types": List<dynamic>.from(types.map((x) => x.toMap())),
         "weight": weight,
     };
-
+  
     String getPokemonName(String name){
       return "${name[0].toUpperCase()}${name.substring(1).toLowerCase()}";
     }
@@ -71,6 +72,11 @@ class PokemonResponse {
 
     String get realweight{
       return (weight * 0.22).toStringAsFixed(2);
+    }
+
+    double getStatRate(int statVal){
+      double rate = double.parse((statVal/255).toStringAsFixed(2));
+      return rate;
     }
 
     List<Widget> getPokemonTypes(List<Type> types){

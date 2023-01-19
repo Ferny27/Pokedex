@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 // To parse this JSON data, do
 //
 //     final paginationResponse = paginationResponseFromMap(jsonString);

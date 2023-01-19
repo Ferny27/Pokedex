@@ -33,7 +33,7 @@ class PokemonProvider extends ChangeNotifier {
     //Obtenemos la información de cada pokemón de la página
     int column =0;
     for(PokemonPath pokemon in page.results){
-      //print(pokemon.url);
+      print(pokemon.url);
       url = Uri.https(_baseUrl, 'api/v2/pokemon/${pokemon.name}',);
       final data = await http.get(url);
 
