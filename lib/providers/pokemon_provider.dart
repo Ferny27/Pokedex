@@ -9,6 +9,7 @@ class PokemonProvider extends ChangeNotifier {
   int offset = 0;
   List<TableRow> pokemonTable = [];
   List<Widget> pokemonRow=[];
+  Map<String, String> pokemonDescriptions = {};
 
   PokemonProvider(){
     getPokemon();
@@ -33,7 +34,7 @@ class PokemonProvider extends ChangeNotifier {
     //Obtenemos la información de cada pokemón de la página
     int column =0;
     for(PokemonPath pokemon in page.results){
-      print(pokemon.url);
+      //print(pokemon.url);
       url = Uri.https(_baseUrl, 'api/v2/pokemon/${pokemon.name}',);
       final data = await http.get(url);
 
@@ -53,5 +54,25 @@ class PokemonProvider extends ChangeNotifier {
     }
     offset += 20;
     notifyListeners();
+  }
+
+  Future<String> getSpecieInfo(String id) async{
+
+    if(pokemonDescriptions.containsKey(id)) return pokemonDescriptions[id]!;
+
+    // Crear URL de la petición y recepción de los datos
+    var url = Uri.https(_baseUrl,'api/v2/pokemon-species/$id');
+    final data = await http.get(url);
+
+    // Conversión de los datos
+    final pokemonSpecieData = PokemonSpecie.fromJson(data.body);
+
+    final descriptionIndex = pokemonSpecieData.flavorTextEntries.firstWhere((flText) => flText.language.name == 'en');
+    final description = descriptionIndex.flavorText.replaceAll('\n', " ").replaceAll('\f', " ").replaceAll('POKéMON', 'Pokemon');
+   
+    // Se almacena la descripción para evitar peticiones adicionales
+    pokemonDescriptions.addAll({id: description});
+
+    return description;
   }
 }

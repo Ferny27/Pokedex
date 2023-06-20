@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
+// Pokemon Information : Sprites, height, weight, base exp, stats
+
 class PokemonResponse{
     PokemonResponse({
       required this.baseExperience,
@@ -399,3 +401,138 @@ class Type {
         "type": type.toMap(),
     };
 }
+
+// Pokemon Specie Information : Evolutions, flavor text (description), habitat, varieties
+
+class PokemonSpecie {
+    PokemonSpecie({
+        required this.evolutionChain,
+        this.evolvesFromSpecies,
+        required this.flavorTextEntries,
+        required this.habitat,
+        required this.varieties,
+    });
+
+    EvolutionChain evolutionChain;
+    EvolvesFromSpecies? evolvesFromSpecies;
+    List<FlavorTextEntry> flavorTextEntries;
+    EvolvesFromSpecies habitat;
+    List<Variety> varieties;
+
+    factory PokemonSpecie.fromJson(String str) => PokemonSpecie.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory PokemonSpecie.fromMap(Map<String, dynamic> json) => PokemonSpecie(
+        evolutionChain: EvolutionChain.fromMap(json["evolution_chain"]),
+        evolvesFromSpecies:EvolvesFromSpecies.fromMap(json["evolves_from_species"] ?? {}),
+        flavorTextEntries: List<FlavorTextEntry>.from(json["flavor_text_entries"].map((x) => FlavorTextEntry.fromMap(x))),
+        habitat: EvolvesFromSpecies.fromMap(json["habitat"]),
+        varieties: List<Variety>.from(json["varieties"].map((x) => Variety.fromMap(x))),
+    );
+
+    Map<String, dynamic> toMap() => {
+        "evolution_chain": evolutionChain.toMap(),
+        "evolves_from_species": evolvesFromSpecies?.toMap(),
+        "flavor_text_entries": List<dynamic>.from(flavorTextEntries.map((x) => x.toMap())),
+        "habitat": habitat.toMap(),
+        "varieties": List<dynamic>.from(varieties.map((x) => x.toMap())),
+    };
+}
+
+class EvolutionChain {
+    EvolutionChain({
+        required this.url,
+    });
+
+    String url;
+
+    factory EvolutionChain.fromJson(String str) => EvolutionChain.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory EvolutionChain.fromMap(Map<String, dynamic> json) => EvolutionChain(
+        url: json["url"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "url": url,
+    };
+}
+
+class EvolvesFromSpecies {
+    EvolvesFromSpecies({
+        this.name,
+        this.url,
+    });
+
+    String? name;
+    String? url;
+
+    factory EvolvesFromSpecies.fromJson(String str) => EvolvesFromSpecies.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory EvolvesFromSpecies.fromMap(Map<String, dynamic> json) => EvolvesFromSpecies(
+        name: json["name"],
+        url: json["url"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "name": name,
+        "url": url,
+    };
+}
+
+class FlavorTextEntry {
+    FlavorTextEntry({
+        required this.flavorText,
+        required this.language,
+        required this.version,
+    });
+
+    String flavorText;
+    EvolvesFromSpecies language;
+    EvolvesFromSpecies version;
+
+    factory FlavorTextEntry.fromJson(String str) => FlavorTextEntry.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory FlavorTextEntry.fromMap(Map<String, dynamic> json) => FlavorTextEntry(
+        flavorText: json["flavor_text"],
+        language: EvolvesFromSpecies.fromMap(json["language"]),
+        version: EvolvesFromSpecies.fromMap(json["version"]),
+    );
+
+    Map<String, dynamic> toMap() => {
+        "flavor_text": flavorText,
+        "language": language.toMap(),
+        "version": version.toMap(),
+    };
+}
+
+class Variety {
+    Variety({
+        required this.isDefault,
+        required this.pokemon,
+    });
+
+    bool isDefault;
+    EvolvesFromSpecies pokemon;
+
+    factory Variety.fromJson(String str) => Variety.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory Variety.fromMap(Map<String, dynamic> json) => Variety(
+        isDefault: json["is_default"],
+        pokemon: EvolvesFromSpecies.fromMap(json["pokemon"]),
+    );
+
+    Map<String, dynamic> toMap() => {
+        "is_default": isDefault,
+        "pokemon": pokemon.toMap(),
+    };
+}
+

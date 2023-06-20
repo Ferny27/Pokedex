@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/models.dart';
+import 'package:provider/provider.dart';
+import '../providers/providers.dart';
 import '../widgets/widgets.dart';
 
 class PokemonScreen extends StatelessWidget {
@@ -20,7 +22,7 @@ class PokemonScreen extends StatelessWidget {
       
           _PokemonInfo(pokemon: pokemon),
 
-          const _PokemonDescription(),
+          _PokemonDescription( pokemon.id.toString() ),
 
           _PokemonChars( pokemon ),
 
@@ -205,21 +207,43 @@ class _StatBarAnimationState extends State<_StatBarAnimation> with TickerProvide
 }
 
 class _PokemonDescription extends StatelessWidget {
-  const _PokemonDescription({
-    Key? key,
-  }) : super(key: key);
+
+  final String id;
+
+  const _PokemonDescription(this.id,);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric( vertical: 15),
-      child: const Text(
-        "Mollit occaecat excepteur dolor culpa ea occaecat in magna eu. Elit cupidatat aute in fugiat reprehenderit id exercitation elit nostrud laborum. Ipsum laborum cillum nostrud sit ullamco culpa reprehenderit enim culpa sint Lorem quis qui. Commodo consequat ut ullamco occaecat exercitation mollit officia et.",
-        style: TextStyle(color: Colors.black45),
-        textAlign: TextAlign.justify,
-        )
 
+    final PokemonProvider pokemonProvider = Provider.of<PokemonProvider>(context);
+
+    return FutureBuilder(
+      future: pokemonProvider.getSpecieInfo(id),
+      builder: ((context, snapshot) {
+        if(snapshot.connectionState != ConnectionState.done){
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 15),
+            height: 20,
+            width: 20,
+            child: const CircularProgressIndicator(),
+          );
+        }
+        //return Container(
+        //  height: 50,
+        //  width: 50,
+        //  color: Colors.blue,
+        //);
+        return Container(
+          margin: const EdgeInsets.symmetric( vertical: 15),
+          child: Text(
+            snapshot.data!,
+            style: const TextStyle(color: Colors.black45, fontSize: 15),
+            textAlign: TextAlign.justify,
+          )
+        );
+      })
     );
+
   }
 }
 
